@@ -2,19 +2,15 @@ rails:
   config:
     injection_detection:
       injections:
-        code
-        sqli
-        template
-        xss
+        - code
+        - sqli
+        - template
+        - xss
       action:
         reject
 
-  output:
-    flows:
-      njection_detection
-
 models:
-  type: main
-  engine: openai
-  model: gpt-4o-mini
-  api_key: ${OPENAI_API_KEY}   # will be read from environment
+  - type: main
+    engine: openai
+    model: gpt-4o-mini
+    api_key: ${OPENAI_API_KEY}

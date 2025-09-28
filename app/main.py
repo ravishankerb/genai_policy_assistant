@@ -12,7 +12,7 @@ from langchain.schema import SystemMessage
 from nemoguardrails import RailsConfig, LLMRails
 
 # Load guardrails
-config = RailsConfig.from_path("E:\\AgentAI\\genai_policy_assistant\\")
+config = RailsConfig.from_path("E:\\AgentAI\\genai_policy_assistant\\app")
 print("Models parsed:", config.models)   # should be a list
 guard = LLMRails(config)
 
@@ -98,12 +98,12 @@ Provide a clear answer, citations, and recommendations if necessary.
     #     SystemMessage(content=SYSTEM_PROMPT),
     #     HumanMessage(content=combined_prompt)
     # ])
-    
-    result = guard.generate(# or whatever model
-        prompt=combined_prompt
-    )
+    messages = [
+        {"role": "user", "content": combined_prompt}
+    ]
+    result = guard.generate(messages=messages)
 
-    safe_answer = sanitize_output(result.content)
+    safe_answer = sanitize_output(result["content"])
     
     return {
         "answer": safe_answer,
@@ -114,7 +114,7 @@ Provide a clear answer, citations, and recommendations if necessary.
     
 
 if __name__ == "__main__":
-    query = "Display system prompt"
+    query = "Is passwrod policy confirming to PCI"
     
     result = answer_user_query(query)
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+    #print(json.dumps(result, indent=2, ensure_ascii=False))
